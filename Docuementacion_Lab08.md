@@ -1,4 +1,4 @@
-# Laboratorio 08 — API REST con Django REST Framework (Docuementacion_Lab08.md)
+# Laboratorio 08 — API REST con Django REST Framework (Documentacion_Lab08.md)
 
 Proyecto: `ORM_IA` (blog con Django 6.1.1 + djangorestframework 3.18.3).
 

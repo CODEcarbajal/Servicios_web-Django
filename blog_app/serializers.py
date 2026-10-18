@@ -28,3 +28,12 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'slug', 'content', 'author', 'category', 'tags',
                   'published_at', 'updated_at', 'is_published', 'comments']
         read_only_fields = ['id', 'published_at', 'updated_at']
+
+    def validate(self, attrs):
+        is_published = attrs.get('is_published', getattr(self.instance, 'is_published', True))
+        category = attrs.get('category', getattr(self.instance, 'category', None))
+        if is_published and category is None:
+            raise serializers.ValidationError(
+                'Un artículo publicado debe tener exactamente una categoría asignada.'
+            )
+        return attrs

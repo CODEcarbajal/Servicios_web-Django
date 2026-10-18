@@ -24,3 +24,20 @@ Cliente externo: `curl` con cuerpo en `Content-Type: application/json`.
 Las respuestas obtenidas con `curl` coinciden con las de la API navegable
 (`/api/` en el navegador): mismo cuerpo JSON y mismo código de estado en las
 cinco operaciones de los tres recursos.
+
+## Errores provocados a propósito (POST /api/articles/)
+
+| Error | Cuerpo enviado | Código | Mensaje devuelto |
+|---|---|---|---|
+| Campo obligatorio ausente | sin `title` | 400 | `{"title":["This field is required."]}` |
+| Tipo incorrecto | `"author":"abc"` | 400 | `{"author":["Incorrect type. Expected pk value, received str."]}` |
+| Validación propia (publicado sin categoría) | `is_published:true` sin `category` | 400 | `{"non_field_errors":["Un artículo publicado debe tener exactamente una categoría asignada."]}` |
+
+## Filtrado, búsqueda y paginación
+
+| Prueba | Dirección | Resultado |
+|---|---|---|
+| Filtrado por categoría (examen) | GET /api/articles/?category=django | `count: 4`, todos con `category: 36` |
+| Búsqueda por texto | GET /api/articles/?search=testing | `count: 1`, "Testing en Django" |
+| Página 1 de resultados | GET /api/articles/ | `count: 8`, 5 resultados, `next` apunta a `?page=2`, `previous: null` |
+| Página 2 de resultados | GET /api/articles/?page=2 | 3 resultados, `next: null`, `previous` apunta a la raíz |
